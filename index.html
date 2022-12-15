@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","NYPD_Shooting_Incident_Data__Historic_.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1517,9 +1517,77 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I am interested in exploring data related to drug overdoses and looking at if Male vs. Female has an impact on this. I will also be looking at if age factors in drug overdoses as well.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="introduction">Introduction</h2>
+<p>My project explores the times of the day at which shootings have taken place in the five boroughs of New York from January 1, 2006 through December 31, 2021. My project asks if the time of day associates with a higher number of shootings in New York, as well as if certain age groups or boroughs are more likely to be victims of a shooting.</p>
+<h2 id="data-and-research">Data and Research:</h2>
+<p>I am looking at the NYPD Shooting Incident History (Historic) data looking at reported gun violence incidents in the five boroughs of New York from 1/1/2006 through 12/31/2021. <a href="https://catalog.data.gov/dataset/nypd-shooting-incident-data-historic" class="uri">https://catalog.data.gov/dataset/nypd-shooting-incident-data-historic</a></p>
+<p>My analysis looks at the effect of time of day with the occurrence of an incident a shooting, the grouped ages of the victims of the shootings, and the race of the victim of the shooting. My research design is longitudinal.</p>
+<p>NYPDS (New York Police Department Shootings Dataset) provides me with the outcome variable that is the time at which every shooting occurred during the day (OCCUR_TIME) from 1/1/2006 through 12/31/2021. The outcome ranged anywhere from 00:00:00 to 23:59:00 in a given day.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span><span class='va'>NY_Shoot</span><span class='op'>$</span><span class='va'>OCCUR_TIME</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>NY_Shoot</span><span class='op'>$</span><span class='va'>OCCUR_TIME</span>, format<span class='op'>=</span><span class='st'>"%H:%M:%S"</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data<span class='op'>=</span><span class='va'>NY_Shoot</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>OCCUR_TIME</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>bins <span class='op'>=</span> <span class='fl'>96</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Amount of Shootings by Minute"</span>, </span>
+<span>       x <span class='op'>=</span> <span class='st'>"Time Occurance"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Count"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
+</div>
+<p>This histogram showed the proportion of shootings in New York that occurred during each time of the day. The results can clearly be seen that there is an inverse bell curve, meaning that a higher proportion of shootings took place around midnight (late at night) than during the day.</p>
+<p>My explanatory variable of age groups of the victims of gun violence incidents (numeric_age_groups) was also from the NYPDS dataset, as well as the race of the victim, which I used in the multivariate regression model. In looking at age of the shooting victims they were split into groups of under 18 years old(&lt;18), 18-24, 25-44, 45-64, and 65 and over(65+). In order to use this in my multivariate regression model I assigned each age grouping a number 1-5 with the &lt;18 group as 1 up to the 65+ group as 5. My project is primarily focused on the relationship between time of day , age of victims, and the race of the victim, in gun violence incidents in New York, but there are confounding variables that could come into play in this. A confounding variable could be that as the use of alcohol and drugs are more common at night, that people’s decision making could be impaired. Another confounding variable is that because it is dark out at night, people are more likely to think that they will not be seen and get away with the shooting.</p>
+<h2 id="results">Results</h2>
+<p>The relationship between Time of Shooting and Age Group of the Victim can be visualized on a scatter plot. The explanatory variable of Age Group of Victim is in the x-axis and is split up into 5 different groups. Group 1 is &lt;18 years old, group 2 is 18-24 years old, group 3 is 25-44 years old, group 4 is 45-64 years old, and group 5 is 65+ years old. The y-axis is time of day of the shooting with 00:00:00 at the bottom of the y-axis and 23:59:00 at the top.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>NY_Shoot</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>numeric_age_groups</span>, y <span class='op'>=</span> <span class='va'>OCCUR_TIME</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Association Between Time of Shooting and Age of Victim"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Age Group of Victim"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Time of Shooting"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+</div>
+<p>My results reveal that people in the younger age groups(closer to group 1/&lt;18) were victims of shootings later in the day/nighttime, while older people were killed earlier in the day. My results show that there is a slight different in the time of day that different age groups are shot in New York, but it is not a very large difference. Because the age group data has been filtered down to 5 groupings, there is less variance among specific ages, as it is more general.</p>
+<h3 id="regression-results">Regression Results</h3>
+<p>The relationship between the time of day in which shootings occur in New York and the two explanatory variables of Age Group and Race of the Victim are shown in my multivariate regression model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://moderndive.github.io/moderndive/'>moderndive</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lm1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>OCCUR_TIME</span> <span class='op'>~</span>  <span class='va'>VIC_RACE</span> <span class='op'>+</span> <span class='va'>numeric_age_groups</span>, <span class='va'>NY_Shoot</span>, na.action <span class='op'>=</span> <span class='va'>na.exclude</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lm1</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = OCCUR_TIME ~ VIC_RACE + numeric_age_groups, data = NY_Shoot, 
+    na.action = na.exclude)
+
+Coefficients:
+                     (Intercept)  VIC_RACEASIAN / PACIFIC ISLANDER  
+                      1671052036                             -9227  
+                   VIC_RACEBLACK            VIC_RACEBLACK HISPANIC  
+                           -9574                             -9904  
+                 VIC_RACEUNKNOWN                     VIC_RACEWHITE  
+                          -16451                             -6555  
+          VIC_RACEWHITE HISPANIC                numeric_age_groups  
+                           -9590                             -1186  </code></pre>
+</div>
+<p>This is the output from a linear regression analysis in R. The regression model is using the OCCUR_TIME variable as the response variable and the VIC_RACE and numeric_age_groups variables as predictor variables.</p>
+<p>The output lists the coefficients for each predictor variable in the model. The intercept term is the estimated value of the response variable when all predictor variables are 0. The coefficients for the predictor variables indicate the average change in the response variable for a one-unit change in the predictor, while holding the other predictors constant. For example, the coefficient for VIC_RACEASIAN / PACIFIC ISLANDER is -9227 , which means that on average, the OCCUR_TIME is -3672 units lower for individuals with a VIC_RACE of “ASIAN / PACIFIC ISLANDER” compared to individuals with a VIC_RACE of “WHITE”. The actual difference in ‘OCCUR_TIME’ between individuals of different races and age groups may vary depending on the specific predictor variable.</p>
+<p>Overall, this output provides the coefficients for the predictor variables in the linear regression model, which we can use to understand the relationship between the response and predictor variables.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>My histogram showed that there is a definite relation between the time of day and shootings in New York, with a significant slant in data in the amount of shootings that were closer to midnight. My bivariate plot also showed that there is a relationship between the victim of the shooting being younger and being shot closer to midnight. In the multivariate regression, I was able to find different Coefficients for all of my explanatory variables. The coefficient for ‘numeric_age_groups’ was the lowest at -1186 while ‘VIC_RACEBLACK HISPANIC’ was the highest at -9904. The limitations to this study are that the ages of the victims in these shootings in New York are not listed exactly, but as groupings of ages. As a result, it is harder to get as accurate information on how age effects the likilihood of being shot in New York. In order to improve this study, I would like to get more accurate information on the age of individual victims. This would likely give me a more detailed bivariate regression as well as give me a more accurate coefficient of how many units the response variable would change for a 1 unit change in age. I would also like to have more information on the sobriety of the shooter in these instances, as that would give more insight into the effect of the time of day. As well as some further information on if the shootings were premeditated vs. random acts of violence.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
